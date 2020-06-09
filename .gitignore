@@ -1,0 +1,15 @@
+.DS_Store
+
+*.a
+*.sublime-project
+*.sublime-workspace
+/.idea/
+
+# Go cross-compiled binaries
+/dist/
+
+# Go vendored packages
+/vendor/
+
+# Generated
+#/comuni/comuni-generated-data.go
