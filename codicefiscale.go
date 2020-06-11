@@ -56,17 +56,18 @@ func normalizeText(text string) string {
 }
 
 type CodiceFiscale struct {
-	Code			string
-	Surname			string
-	Name			string
-	Sex				Sex
-	BirthDate		time.Time
-	BirthDateYear	int
-	BirthDateMonth	int
-	BirthDateDay	int
-	BirthPlaceName	string
-	BirthPlace		comuni.Comune
-	Raw				CodiceFiscaleRaw
+	Code				string
+	Surname				string
+	Name				string
+	Sex					Sex
+	BirthDate			time.Time
+	BirthDateYear		int
+	BirthDateMonth		int
+	BirthDateDay		int
+	BirthPlaceName		string
+	BirthPlaceComune	comuni.Comune
+	BirthPlaceNazione	comuni.Nazione
+	Raw					CodiceFiscaleRaw
 }
 
 type CodiceFiscaleRaw struct {
@@ -148,13 +149,24 @@ func Decode(codice string) (*CodiceFiscale, error) {
 	birthdate := time.Date(birthdateYear, time.Month(birthdateMonth), birthdateDay,
 		0, 0, 0, 0, time.Local)
 
+	var birthplaceNazione comuni.Nazione
+	var birthplaceComune comuni.Comune
+	birthplaceName := ""
 	catastale := string(raw.BirthPlace[0]) + omocodiaDecodeTrans(raw.BirthPlace[1:])
 	comuneIndex, ok := comuni.Catastale2Comune[catastale]
 	if !ok {
+		nazioneIndex, ok := comuni.Codice2Nazione[catastale]
+		if !ok {
 			return nil, fmt.Errorf("birth place code not found")
+		} else {
+			birthplaceNazione = comuni.Nazioni[nazioneIndex]
+			birthplaceName = birthplaceNazione.DenominazioneIT
+		}
+	} else {
+		birthplaceComune = comuni.Comuni[comuneIndex]
+		birthplaceNazione = comuni.Nazioni[comuni.ItalyIndex]
+		birthplaceName = birthplaceComune.Nome
 	}
-
-	birthPlace := comuni.Comuni[comuneIndex]
 
 	cinComputed, err := computeCIN(codice)
 	if err != nil {
@@ -165,17 +177,18 @@ func Decode(codice string) (*CodiceFiscale, error) {
 	}
 
 	return &CodiceFiscale{
-		Code:           raw.Code,
-		Surname:        raw.Surname,
-		Name:           raw.Name,
-		Sex:			sex,
-		BirthDate:      birthdate,
-		BirthDateYear:  birthdateYear,
-		BirthDateMonth: birthdateMonth,
-		BirthDateDay:   birthdateDay,
-		BirthPlaceName: birthPlace.Nome,
-		BirthPlace:     birthPlace,
-		Raw:            *raw,
+		Code:           	raw.Code,
+		Surname:        	raw.Surname,
+		Name:           	raw.Name,
+		Sex:				sex,
+		BirthDate:			birthdate,
+		BirthDateYear:		birthdateYear,
+		BirthDateMonth:		birthdateMonth,
+		BirthDateDay:		birthdateDay,
+		BirthPlaceName:		birthplaceName,
+		BirthPlaceNazione:	birthplaceNazione,
+		BirthPlaceComune:	birthplaceComune,
+		Raw:            	*raw,
 	}, err
 }
 

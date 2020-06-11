@@ -26,3 +26,21 @@ type Comune struct {
 	Sigla			string		`json:"sigla"`
 	Zona  			Zona	  `json:"zona"`
 }
+
+type Nazione struct {
+	Stato_Territorio				string
+	CodiceContinente				string
+	DenominazioneContinente			string
+	CodiceArea						string
+	DenominazioneArea				string
+	CodiceISTAT						string
+	DenominazioneIT					string
+	DenominazioneEN					string
+	CodiceMIN						string
+	CodiceAT						string
+	CodiceUNSD_M49					string
+	Codice_ISO_3166_alpha2			string
+	Codice_ISO_3166_alpha3			string
+	Codice_ISTAT_Stato_Padre		string
+	Codice_ISO_alpha3_Stato_Padre	string
+}

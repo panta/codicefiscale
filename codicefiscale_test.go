@@ -24,6 +24,7 @@ func TestDecode(t *testing.T) {
 		{ "RSSMRA77L18H501WA", false, "RSS", "MRA", Male, 1977, 7, 18, "Roma" },
 		{ "BNCGRC69A41G048P", true, "BNC", "GRC", Female, 1969, 1, 1, "Olmo Gentile" },
 		{ "BNCGRC69A41G048A", false, "BNC", "GRC", Female, 1969, 1, 1, "Olmo Gentile" },
+		{ "RSSMRA77L18Z103I", true, "RSS", "MRA", Male, 1977, 7, 18, "Belgio" },
 	}
 
 	for _, fixture := range fixtures {
@@ -61,7 +62,7 @@ func TestDecode(t *testing.T) {
 		if strings.ToUpper(cf.BirthPlaceName) != strings.ToUpper(fixture.BirthPlace) {
 			t.Errorf("Birth place mismatch, expected:'%v' got:'%v'", fixture.BirthPlace, cf.BirthPlaceName)
 		}
-		if cf.BirthPlace.CodiceCatastale == "" {
+		if cf.BirthPlaceNazione.DenominazioneIT == "Italia" && cf.BirthPlaceComune.CodiceCatastale == "" {
 			t.Errorf("Missing 'codice catastale' from results")
 		}
 	}
