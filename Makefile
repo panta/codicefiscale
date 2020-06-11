@@ -9,6 +9,7 @@ all: test $(GENERATED)
 
 .PHONY: generate
 $(GENERATED) generate: generate.go comuni/process-comuni.go
+	-rm $(GENERATED)
 	$(GO) generate
 
 .PHONY: test
