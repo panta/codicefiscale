@@ -25,6 +25,7 @@ func TestDecode(t *testing.T) {
 		{ "BNCGRC69A41G048P", true, "BNC", "GRC", Female, 1969, 1, 1, "Olmo Gentile" },
 		{ "BNCGRC69A41G048A", false, "BNC", "GRC", Female, 1969, 1, 1, "Olmo Gentile" },
 		{ "RSSMRA77L18Z103I", true, "RSS", "MRA", Male, 1977, 7, 18, "Belgio" },
+		{ "RSSLVR64M44Z602P", true, "RSS", "LVR", Female, 1964, 8, 4, "Brasile" },
 	}
 
 	for _, fixture := range fixtures {
